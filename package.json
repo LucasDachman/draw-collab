@@ -1,0 +1,16 @@
+{
+  "name": "draw-colab-server",
+  "version": "1.0.0",
+  "description": "server code for colaborative drawing app",
+  "main": "index.js",
+  "author": "Lucas Dachman",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "socket.io": "^2.2.0",
+    "uuid": "^3.3.2"
+  }
+}
