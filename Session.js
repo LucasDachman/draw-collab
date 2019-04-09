@@ -1,5 +1,5 @@
 module.exports = class Session {
-    constructor(name) {
+    constructor(name, color) {
         console.log('got it!');
         
         this.name = name;
@@ -7,6 +7,7 @@ module.exports = class Session {
         this.mouseY = 0;
         this.timer = 0;
         this.resetTimer()
+        this.color = color;
     }
 
     resetTimer() {
