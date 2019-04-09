@@ -46,11 +46,16 @@ io.on('connection', socket => {
 
   socket.on('canvas', (_canvas) => {
     console.log('received canvas', _canvas);
-    
     canvas.matrix = _canvas.matrix;
     console.log('emitting canvas', canvas);
     io.emit('canvas', canvas);
   });
+
+  socket.on('pixel', ({r, c, value}) => {
+    console.log('received pixel', {r, c, value});
+    canvas.matrix[r][c] = value;
+    io.emit('pixel', {r, c, value});
+  })
 });
 
 const cursorPositions = (sessions) => _.map(sessions, (session) => {
