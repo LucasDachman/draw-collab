@@ -16,11 +16,12 @@ const cors = require('cors');
 
 // global variables
 const colorGen = new ColorGenerator();
+const SIZE = 10;
 
 // used to keep track of unique users {userID: userData}
 const sessions = {};
 
-let canvas = new Canvas(10, 10);
+let canvas = new Canvas(SIZE, SIZE);
 
 // app.use() is for adding middleware to Express
 app.use(bodyParser.json())
@@ -32,41 +33,45 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/create_user', (req, res) => {
-  // const key = uuid();
-  const color = colorGen.nextColor();
-  // sessions[key] = new Session(req.body.name, color);
-  res.json({ success: true, color: color });
-});
-
 io.on('connection', socket => {
+  const sessionKey = uuid();
+  const color = colorGen.nextColor();
+  const session = new Session(sessionKey, color)
+  sessions[sessionKey] = session;
+
+  socket.emit('init', { sessionKey, color, canvas });
+  
   //When a connection was created.
-  console.log('emitting canvas', canvas);
   socket.emit('canvas', canvas);
 
   socket.on('canvas', (_canvas) => {
-    console.log('received canvas', _canvas);
     canvas.matrix = _canvas.matrix;
-    console.log('emitting canvas', canvas);
     io.emit('canvas', canvas);
   });
 
-  socket.on('pixel', ({r, c, value}) => {
-    console.log('received pixel', {r, c, value});
+  socket.on('pixel', ({ r, c, value }) => {
     canvas.matrix[r][c] = value;
-    io.emit('pixel', {r, c, value});
-  })
-});
+    io.emit('pixel', { r, c, value });
+  });
 
-const cursorPositions = (sessions) => _.map(sessions, (session) => {
-  return {
-    x: session.mouseX,
-    y: session.mouseY,
-    name: session.name,
-    key: session.getName
-  };
+  socket.on('pointer', ({ sessionKey, xPercent, yPercent }) => {
+    const { color } = session;
+    session.pointerX = xPercent;
+    session.pointerY = yPercent;
+    socket.broadcast.emit('pointer', { sessionKey, color, xPercent, yPercent });
+  });
+
+  socket.on('disconnect', (reason) => {
+    console.log('disconnect:', reason);
+    delete sessions[sessionKey];
+    socket.broadcast.emit('userDisconnected', {sessionKey});
+  });
+
+  console.log('new user with: ', {sessionKey, color});
+  console.log('total connections: ', Object.keys(sessions).length);
 });
 
 http.listen(8080, () => {
   //When the server is initialized.
+  console.log('Server started on port 8080...');
 });
