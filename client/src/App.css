@@ -1,0 +1,72 @@
+@import url("../node_modules/normalize.css/normalize.css");
+
+html {
+  background-color: lightgray;
+}
+
+main.App {
+  width: 90%;
+  margin: auto;
+}
+
+.pointer-friends {
+  position: absolute;
+  margin: auto;
+  width: 50vw;
+  height: 50vw;
+  pointer-events: none;
+}
+
+.pointer-friend {
+  position: absolute;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  transform: translate(-6px, -6px);
+  background-color: black;
+  border-radius: 15px;
+}
+
+.pixel-canvas {
+  position: relative;
+  background-color: white;
+  margin: auto;
+  width: 50vw;
+  height: 50vw;
+}
+
+.canvas-rows {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
+.canvas-row {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 100%;
+}
+
+.pixel {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid lightgray;
+}
+
+.pixel.red {
+  background-color: red;
+  border-color: red;
+}
+
+.pixel.green {
+  background-color: green;
+  border-color: green;
+}
+
+.pixel.blue {
+  background-color: blue;
+  border-color: blue;
+}
