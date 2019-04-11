@@ -14,6 +14,7 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "deploy": "git subtree push --prefix server heroku master"
   }
 }
