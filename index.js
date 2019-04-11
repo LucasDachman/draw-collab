@@ -69,6 +69,11 @@ io.on('connection', socket => {
     socket.broadcast.emit('pointer', { sessionKey, color, xPercent, yPercent });
   });
 
+  socket.on('clear', () => {
+    canvas.clear();
+    io.emit('canvas', canvas);
+  });
+
   socket.on('disconnect', (reason) => {
     console.log('disconnect:', reason);
     delete sessions[sessionKey];
