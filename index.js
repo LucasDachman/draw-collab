@@ -79,9 +79,10 @@ io.on('connection', socket => {
   console.log('total connections: ', Object.keys(sessions).length);
 });
 
+const port = process.env.PORT || 8080;
 http.listen(8080, () => {
   //When the server is initialized.
-  console.log('Server started on port 8080...');
+  console.log('Server started on port ' + port + '...');
 });
 
 const pointers = (currentSession) => {
