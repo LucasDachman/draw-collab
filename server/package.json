@@ -1,7 +1,7 @@
 {
-  "name": "draw-colab-server",
+  "name": "draw-collab-server",
   "version": "1.0.0",
-  "description": "server code for colaborative drawing app",
+  "description": "server code for collaborative drawing app",
   "main": "index.js",
   "author": "Lucas Dachman",
   "license": "MIT",
@@ -14,6 +14,6 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "node ."
+    "start": "node ./index.js"
   }
 }
