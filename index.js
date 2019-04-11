@@ -16,7 +16,7 @@ const cors = require('cors');
 
 // global variables
 const colorGen = new ColorGenerator();
-const SIZE = 10;
+const SIZE = 40;
 
 // used to keep track of unique users {userID: userData}
 const sessions = {};
@@ -38,9 +38,9 @@ io.on('connection', socket => {
   const color = colorGen.nextColor();
   const session = new Session(sessionKey, color)
   sessions[sessionKey] = session;
+  // send session key, designated color, current canvas state, and all other pointer positions
+  socket.emit('init', { sessionKey, color, canvas, pointers: pointers(sessionKey) });
 
-  socket.emit('init', { sessionKey, color, canvas });
-  
   //When a connection was created.
   socket.emit('canvas', canvas);
 
@@ -64,10 +64,10 @@ io.on('connection', socket => {
   socket.on('disconnect', (reason) => {
     console.log('disconnect:', reason);
     delete sessions[sessionKey];
-    socket.broadcast.emit('userDisconnected', {sessionKey});
+    socket.broadcast.emit('userDisconnected', { sessionKey });
   });
 
-  console.log('new user with: ', {sessionKey, color});
+  console.log('new user with: ', { sessionKey, color });
   console.log('total connections: ', Object.keys(sessions).length);
 });
 
@@ -75,3 +75,13 @@ http.listen(8080, () => {
   //When the server is initialized.
   console.log('Server started on port 8080...');
 });
+
+const pointers = (currentSession) => {
+  const otherSessions = _.omit(sessions, currentSession);
+  return _.reduce(otherSessions, (acc, curr, key) => {
+    const xPercent = curr.pointerX;
+    const yPercent = curr.pointerY;
+    const color = curr.color;
+    return { ...acc, [key]: { xPercent, yPercent, color } }
+  }, {})
+}
