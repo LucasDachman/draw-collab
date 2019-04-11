@@ -4,7 +4,7 @@ module.exports = class Canvas {
   constructor(rows, cols) {
     this.rows = rows;
     this.cols = cols;
-    this.matrix = initMatrix(rows, cols);
+    this.matrix = this.initMatrix(rows, cols);
   }
 
   initMatrix(rows, cols) {
@@ -13,6 +13,6 @@ module.exports = class Canvas {
   }
 
   clear() {
-    this.matrix = initMatrix(this.rows, this.cols);
+    this.matrix = this.initMatrix(this.rows, this.cols);
   }
 }
