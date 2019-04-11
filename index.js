@@ -1,8 +1,10 @@
 // dependencies
-const app = require('express')();
+const express = require('express');
+const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const uuid = require('uuid/v4');
+const path = require('path');
 const Session = require('./Session');
 const _ = require('lodash');
 const Canvas = require('./Canvas');
@@ -31,6 +33,12 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
+});
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 io.on('connection', socket => {
