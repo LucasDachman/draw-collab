@@ -80,7 +80,7 @@ io.on('connection', socket => {
 });
 
 const port = process.env.PORT || 8080;
-http.listen(8080, () => {
+http.listen(port, () => {
   //When the server is initialized.
   console.log('Server started on port ' + port + '...');
 });
