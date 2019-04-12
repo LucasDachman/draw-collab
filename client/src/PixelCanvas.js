@@ -58,7 +58,8 @@ class Pixel extends React.Component {
   render() {
     const {color, onClick} = this.props;
     return (
-      <div className={`pixel ${color}`}
+      <div className='pixel'
+        style={{backgroundColor: color, borderColor: color}}
         onClick={onClick} />
     );
   }
