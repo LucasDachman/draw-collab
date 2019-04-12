@@ -49,9 +49,6 @@ io.on('connection', socket => {
   // send session key, designated color, current canvas state, and all other pointer positions
   socket.emit('init', { sessionKey, color, canvas, pointers: pointers(sessionKey) });
 
-  //When a connection was created.
-  socket.emit('canvas', canvas);
-
   socket.on('canvas', (_canvas) => {
     canvas.matrix = _canvas.matrix;
     io.emit('canvas', canvas);
@@ -78,6 +75,7 @@ io.on('connection', socket => {
     console.log('disconnect:', reason);
     delete sessions[sessionKey];
     socket.broadcast.emit('userDisconnected', { sessionKey });
+    console.log('total connections: ', Object.keys(sessions).length);
   });
 
   console.log('new user with: ', { sessionKey, color });
